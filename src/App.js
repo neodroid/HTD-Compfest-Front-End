@@ -4,9 +4,10 @@ import {
   Box,
   Text,
   Link,
-  VStack,
-  Code,
+  Textarea,
+  SimpleGrid,
   Grid,
+  GridItem,
   theme,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -15,11 +16,24 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
+        <Grid minH="75vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Text>HARTA TAHTA DATA</Text>
-          </VStack>
+          <Text fontSize="6xl" color="teal">
+            EssAI.id
+          </Text>
+          <SimpleGrid columns={2} spacing={10} minChildWidth="400px">
+            <Box>
+              <Textarea
+                border="2px"
+                placeholder="Isi kalimat anda disini"
+                type="whiteAlpha"
+                h="400"
+              />
+            </Box>
+            <Box w="100%" h="400" bg="teal" borderRadius="lg" />
+          </SimpleGrid>
+
+          <Text>EssAI.id by HARTA TAHTA DATA❤️</Text>
         </Grid>
       </Box>
     </ChakraProvider>
