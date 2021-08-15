@@ -48,7 +48,7 @@ function App() {
           >
             EssAI.id
           </Text>
-          <SimpleGrid columns={2} spacing={10} minChildWidth="400px" px="5">
+          <SimpleGrid columns={2} spacing={10} minChildWidth="250px" px="5">
             <Box>
               <Textarea
                 border="2px"
