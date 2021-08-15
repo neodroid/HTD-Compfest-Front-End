@@ -7,13 +7,23 @@ import {
   Textarea,
   SimpleGrid,
   Grid,
-  GridItem,
+  Flex,
   theme,
-  useColorModeValue,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Lorem,
+  Button,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 function App() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [value, setValue] = React.useState('');
   const [wordCount, setWordCount] = React.useState(0);
   const [charCount, setCharCount] = React.useState(0);
@@ -39,15 +49,61 @@ function App() {
     <ChakraProvider theme={theme}>
       <Box textAlign="center" fontSize="xl">
         <Grid minH="75vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <Text
-            bgGradient="linear(to-l, #7928CA,#FF0080)"
-            bgClip="text"
-            fontSize="6xl"
-            fontWeight="extrabold"
+          <Flex w="100%" justifyContent="flex-end">
+            <Button
+              onClick={onOpen}
+              borderColor="#7928CA"
+              borderWidth="2px"
+              boxShadow="dark-lg"
+            >
+              Informasi
+            </Button>
+            <ColorModeSwitcher />
+          </Flex>
+
+          <Box>
+            <Text
+              bgGradient="linear(to-l, #7928CA,#FF0080)"
+              bgClip="text"
+              fontSize="6xl"
+              fontWeight="extrabold"
+            >
+              EssAI.id
+            </Text>
+          </Box>
+
+          <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            motionPreset="slideInRight"
+            size="md"
           >
-            EssAI.id
-          </Text>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Informasi</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                EssAI.id adalah aplikasi pemeriksa essay sesuai dengan KBBI yang
+                dibuat oleh tim Harta Tahta DATA❤️
+              </ModalBody>
+              <ModalHeader>Cara Pakai</ModalHeader>
+              <ModalBody>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </ModalBody>
+
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                  Tutup
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
           <SimpleGrid columns={2} spacing={10} minChildWidth="250px" px="5">
             <Box>
               <Textarea
@@ -58,8 +114,9 @@ function App() {
                 borderColor="#7928CA"
                 value={value}
                 onChange={handleInputChange}
+                boxShadow="dark-lg"
               />
-              <SimpleGrid columns={2} textAlign="left">
+              <SimpleGrid columns={2} textAlign="left" mt="5">
                 <Text>Jumlah Kata:</Text>
                 <Text>{wordCount}</Text>
                 <Text>Jumlah Karakter:</Text>
@@ -73,6 +130,7 @@ function App() {
               borderRadius="lg"
               px="5"
               py="5"
+              boxShadow="dark-lg"
             >
               <Box
                 h="50px"
