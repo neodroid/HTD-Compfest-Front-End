@@ -3,12 +3,11 @@ import {
   ChakraProvider,
   Box,
   Text,
-  Link,
+  theme,
   Textarea,
   SimpleGrid,
   Grid,
   Flex,
-  theme,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -21,6 +20,10 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+import Fonts from './fonts';
+// import theme from './theme';
+
+import book from './img/pencil.png';
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,9 +50,10 @@ function App() {
 
   return (
     <ChakraProvider theme={theme}>
+      {/* <Fonts /> */}
       <Box textAlign="center" fontSize="xl">
         <Grid minH="75vh" p={3}>
-          <Flex w="100%" justifyContent="flex-end">
+          <Flex w="100%" justifyContent="flex-end" p="5">
             <Button
               onClick={onOpen}
               borderColor="#7928CA"
@@ -107,6 +111,7 @@ function App() {
           <SimpleGrid columns={2} spacing={10} minChildWidth="250px" px="5">
             <Box>
               <Textarea
+                focusBorderColor="#FF0080"
                 border="2px"
                 placeholder="Isi kalimat anda disini"
                 type="whiteAlpha"
@@ -132,33 +137,35 @@ function App() {
               py="5"
               boxShadow="dark-lg"
             >
-              <Box
-                h="50px"
-                textAlign="left"
-                borderRadius="lg"
-                fontWeight="400"
-                color="white"
-              >
-                Kata kunci
-              </Box>
-              <Box
-                h="50px"
-                borderRadius="lg"
-                textAlign="left"
-                fontWeight="400"
-                color="white"
-              >
-                Typo
-              </Box>
-              <Box
-                h="50px"
-                borderRadius="lg"
-                textAlign="left"
-                fontWeight="400"
-                color="white"
-              >
-                Nilai
-              </Box>
+              <>
+                <Box
+                  h="50px"
+                  textAlign="left"
+                  borderRadius="lg"
+                  fontWeight="400"
+                  color="white"
+                >
+                  Kata kunci
+                </Box>
+                <Box
+                  h="50px"
+                  borderRadius="lg"
+                  textAlign="left"
+                  fontWeight="400"
+                  color="white"
+                >
+                  Typo
+                </Box>
+                <Box
+                  h="50px"
+                  borderRadius="lg"
+                  textAlign="left"
+                  fontWeight="400"
+                  color="white"
+                >
+                  Nilai
+                </Box>
+              </>
             </SimpleGrid>
           </SimpleGrid>
 
