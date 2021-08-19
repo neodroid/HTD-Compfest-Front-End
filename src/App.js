@@ -15,7 +15,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Lorem,
+  Image,
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -23,7 +23,8 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Fonts from './fonts';
 // import theme from './theme';
 
-import book from './img/pencil.png';
+import book from './img/book2.png';
+import book2 from './img/pencil.png';
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -72,7 +73,7 @@ function App() {
               fontSize="6xl"
               fontWeight="extrabold"
             >
-              EssAI.id
+              essAI.id
             </Text>
           </Box>
 
@@ -87,8 +88,11 @@ function App() {
               <ModalHeader>Informasi</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                EssAI.id adalah aplikasi pemeriksa essay sesuai dengan KBBI yang
-                dibuat oleh tim Harta Tahta DATA❤️
+                essAI.id memastikan semua yang kamu tulis menjadi efektif dan
+                bebas dari kesalahan sesuai dengan PUEBI menggunakan Kecerdasan
+                Buatan.
+                <br />
+                Dikembangkan oleh tim Harta Tahta DATA❤️
               </ModalBody>
               <ModalHeader>Cara Pakai</ModalHeader>
               <ModalBody>
@@ -169,7 +173,7 @@ function App() {
             </SimpleGrid>
           </SimpleGrid>
 
-          <Text mt="30">EssAI.id by HARTA TAHTA DATA❤️</Text>
+          <Text mt="30">essAI.id by HARTA TAHTA DATA❤️</Text>
         </Grid>
       </Box>
     </ChakraProvider>
