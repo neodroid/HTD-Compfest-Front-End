@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ChakraProvider,
   Box,
@@ -18,23 +18,36 @@ import {
   Image,
   Button,
   useDisclosure,
+  useColorModeValue,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import Fonts from './fonts';
-// import theme from './theme';
 
-import book from './img/book2.png';
-import book2 from './img/pencil.png';
+import { Formik, Form } from 'formik';
+import { ColorModeSwitcher } from './ColorModeSwitcher';
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [value, setValue] = React.useState('');
+  const [kalimat, setKalimat] = React.useState('');
   const [wordCount, setWordCount] = React.useState(0);
   const [charCount, setCharCount] = React.useState(0);
+  const [isSubmitting, setSubmitting] = React.useState(false);
+  const [essai, setEssai] = React.useState(null);
+  const [tag, setTag] = React.useState([]);
+  const [typo, setTypo] = React.useState([]);
+  const [word, setWord] = React.useState([]);
+  const [grammar, setGrammar] = React.useState([]);
+  const [final, setFinal] = React.useState(null);
+
+  // {
+  //   typo: '',
+  //   word_checker: '',
+  //   pos_tagger: '',
+  //   grammar_checker: '',
+  //   kalimat_final: '',
+  // }
 
   const handleInputChange = e => {
     const inputValue = e.target.value;
-    setValue(inputValue);
+    setKalimat(inputValue);
     const countWords = count => {
       if (count.length === 0) {
         return 0;
@@ -48,6 +61,41 @@ function App() {
     setWordCount(countWords(inputValue));
     setCharCount(inputValue.length);
   };
+
+  var formdata = new FormData();
+
+  async function fetchKalimatJSON() {
+    formdata.append('text', kalimat);
+    const response = await fetch('https://trialessaiapi.herokuapp.com/check', {
+      method: 'POST',
+      body: formdata,
+    });
+    const kalimat_backend = await response.json();
+    return kalimat_backend;
+  }
+
+  const diClick = () => {
+    setSubmitting(true);
+    fetchKalimatJSON()
+      .then(kalimat_backend => {
+        setEssai(kalimat_backend); // fetched movies
+        console.log(essai);
+
+        setSubmitting(false);
+      })
+      .catch(error => {
+        console.log(error);
+        alert(error);
+        setSubmitting(false);
+      });
+  };
+
+  const listItems = tag.map(number => <Text mr="2">{number + ''}</Text>);
+
+  useEffect(() => {
+    essai ? setTag(essai.pos_tagger) : setTag([]);
+    essai ? setFinal(essai.kalimat_final) : setFinal([]);
+  }, [essai]);
 
   return (
     <ChakraProvider theme={theme}>
@@ -65,7 +113,6 @@ function App() {
             </Button>
             <ColorModeSwitcher />
           </Flex>
-
           <Box>
             <Text
               bgGradient="linear(to-l, #7928CA,#FF0080)"
@@ -76,7 +123,6 @@ function App() {
               essAI.id
             </Text>
           </Box>
-
           <Modal
             isOpen={isOpen}
             onClose={onClose}
@@ -121,7 +167,7 @@ function App() {
                 type="whiteAlpha"
                 h="400"
                 borderColor="#7928CA"
-                value={value}
+                value={kalimat}
                 onChange={handleInputChange}
                 boxShadow="dark-lg"
               />
@@ -131,48 +177,92 @@ function App() {
                 <Text>Jumlah Karakter:</Text>
                 <Text>{charCount}</Text>
               </SimpleGrid>
+              <Button
+                mt={4}
+                colorScheme="teal"
+                // type="submit"
+                onClick={() => {
+                  diClick();
+                }}
+                alignSelf="center"
+                w="330px"
+                isLoading={isSubmitting}
+              >
+                Submit
+              </Button>
             </Box>
-            <SimpleGrid
-              w="100%"
-              h="400"
-              bgGradient="linear(to-r, #7928CA, #FF0080)"
-              borderRadius="lg"
-              px="5"
-              py="5"
-              boxShadow="dark-lg"
-            >
-              <>
-                <Box
-                  h="50px"
-                  textAlign="left"
-                  borderRadius="lg"
-                  fontWeight="400"
-                  color="white"
-                >
-                  Kata kunci
-                </Box>
-                <Box
-                  h="50px"
-                  borderRadius="lg"
-                  textAlign="left"
-                  fontWeight="400"
-                  color="white"
-                >
-                  Typo
-                </Box>
-                <Box
-                  h="50px"
-                  borderRadius="lg"
-                  textAlign="left"
-                  fontWeight="400"
-                  color="white"
-                >
-                  Nilai
-                </Box>
-              </>
-            </SimpleGrid>
-          </SimpleGrid>
+            <Box>
+              <SimpleGrid
+                w="100%"
+                h="200"
+                bgGradient="linear(to-r, #7928CA, #FF0080)"
+                borderRadius="lg"
+                px="5"
+                py="5"
+                boxShadow="dark-lg"
+              >
+                <>
+                  <Box
+                    h="50px"
+                    textAlign="left"
+                    borderRadius="lg"
+                    fontWeight="400"
+                    color="white"
+                  >
+                    POS tag
+                  </Box>
+                  <Flex maxW="100%">{listItems}</Flex>
 
+                  {/* <Box
+                    h="50px"
+                    borderRadius="lg"
+                    textAlign="left"
+                    fontWeight="400"
+                    color="white"
+                  >
+                    Kalimat Final
+                  </Box>
+
+                  <Flex>
+                    <Text>{final}</Text>
+                  </Flex> */}
+                  <Box
+                    h="50px"
+                    borderRadius="lg"
+                    textAlign="left"
+                    fontWeight="400"
+                    color="white"
+                  >
+                    Nilai
+                  </Box>
+                </>
+              </SimpleGrid>
+              <Text
+                // bgGradient="linear(to-l, #7928CA,#FF0080)"
+                // bgClip="text"
+                // fontSize="6xl"
+                // fontWeight="BOLD"
+                mt="15px"
+              >
+                KALIMAT FINAL
+              </Text>
+              <Textarea
+                mt="15px"
+                focusBorderColor="#FF0080"
+                border="2px"
+                placeholder="Isi kalimat anda"
+                type="whiteAlpha"
+                // h="400"
+                // bg="white"
+                h="150px"
+                // maxH="400px"
+                borderColor="#7928CA"
+                boxShadow="dark-lg"
+                value={final}
+                resize="none"
+              />
+            </Box>
+          </SimpleGrid>{' '}
           <Text mt="30">essAI.id by HARTA TAHTA DATA❤️</Text>
         </Grid>
       </Box>
