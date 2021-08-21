@@ -15,11 +15,14 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Image,
+  Center,
   Button,
   useDisclosure,
-  useColorModeValue,
+  Icon,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 import { Formik, Form } from 'formik';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
@@ -32,8 +35,8 @@ function App() {
   const [isSubmitting, setSubmitting] = React.useState(false);
   const [essai, setEssai] = React.useState(null);
   const [tag, setTag] = React.useState([]);
-  const [typo, setTypo] = React.useState([]);
-  const [word, setWord] = React.useState([]);
+  const [typo, setTypo] = React.useState(['']);
+  const [awal, setAwal] = React.useState(['']);
   const [grammar, setGrammar] = React.useState([]);
   const [final, setFinal] = React.useState(null);
 
@@ -90,10 +93,38 @@ function App() {
       });
   };
 
-  const listItems = tag.map(number => <Text mr="2">{number + ''}</Text>);
+  // const listItems = tag.map(hit => <Text mr="2">{hit + ''}</Text>);
+  const listAwal = awal.map((hit, index) =>
+    hit.toLowerCase() != typo[index].toLowerCase() ? (
+      <Flex minW="150px" justifyContent="space-between">
+        <Text color="red" px="10px" borderRadius="lg" as="s" textColor="red">
+          <Text color="white" px="10px" borderRadius="lg">
+            {hit}
+          </Text>
+        </Text>
+        <Center>
+          <Icon as={ArrowForwardIcon} color="white" />
+        </Center>
+
+        <Center
+          bg="green.500"
+          h="auto"
+          px="10px"
+          color="white"
+          borderRadius="md"
+        >
+          {typo[index]}
+        </Center>
+      </Flex>
+    ) : (
+      <></>
+    )
+  );
 
   useEffect(() => {
     essai ? setTag(essai.pos_tagger) : setTag([]);
+    essai ? setAwal(essai.kalimat_awal) : setAwal([]);
+    essai ? setTypo(essai.typo) : setTypo([]);
     essai ? setFinal(essai.kalimat_final) : setFinal([]);
   }, [essai]);
 
@@ -102,27 +133,29 @@ function App() {
       {/* <Fonts /> */}
       <Box textAlign="center" fontSize="xl">
         <Grid minH="75vh" p={3}>
-          <Flex w="100%" justifyContent="flex-end" p="5">
-            <Button
-              onClick={onOpen}
-              borderColor="#7928CA"
-              borderWidth="2px"
-              boxShadow="dark-lg"
-            >
-              Informasi
-            </Button>
-            <ColorModeSwitcher />
+          <Flex w="100%" p="5" justifyContent="space-between">
+            <Flex justifySelf="flex-start">
+              <Text
+                bgGradient="linear(to-l, #7928CA,#FF0080)"
+                bgClip="text"
+                fontSize="4xl"
+                fontWeight="extrabold"
+              >
+                esAI.
+              </Text>
+            </Flex>
+            <Flex>
+              <Button
+                onClick={onOpen}
+                borderColor="#7928CA"
+                borderWidth="2px"
+                boxShadow="dark-lg"
+              >
+                Informasi
+              </Button>
+              <ColorModeSwitcher />
+            </Flex>
           </Flex>
-          <Box>
-            <Text
-              bgGradient="linear(to-l, #7928CA,#FF0080)"
-              bgClip="text"
-              fontSize="6xl"
-              fontWeight="extrabold"
-            >
-              essAI.id
-            </Text>
-          </Box>
           <Modal
             isOpen={isOpen}
             onClose={onClose}
@@ -159,7 +192,7 @@ function App() {
             </ModalContent>
           </Modal>
           <SimpleGrid columns={2} spacing={10} minChildWidth="250px" px="5">
-            <Box>
+            <Box justifyContent="center">
               <Textarea
                 focusBorderColor="#FF0080"
                 border="2px"
@@ -171,12 +204,19 @@ function App() {
                 onChange={handleInputChange}
                 boxShadow="dark-lg"
               />
-              <SimpleGrid columns={2} textAlign="left" mt="5">
-                <Text>Jumlah Kata:</Text>
-                <Text>{wordCount}</Text>
-                <Text>Jumlah Karakter:</Text>
-                <Text>{charCount}</Text>
-              </SimpleGrid>
+              <Flex justify="center">
+                <Box textAlign="left" mt="5" justifySelf="center" w="330px">
+                  <Flex justifyContent="space-between">
+                    <Text>Jumlah Kata:</Text>
+                    <Text>{wordCount}</Text>
+                  </Flex>
+
+                  <Flex justifyContent="space-between">
+                    <Text>Jumlah Karakter:</Text>
+                    <Text justifyItems="flex-end">{charCount}</Text>
+                  </Flex>
+                </Box>
+              </Flex>
               <Button
                 mt={4}
                 colorScheme="teal"
@@ -187,6 +227,8 @@ function App() {
                 alignSelf="center"
                 w="330px"
                 isLoading={isSubmitting}
+                // bgGradient="linear(to-l, #FF0080,#7928CA)"
+                // _hover={{ bg: '#ebedf0' }}
               >
                 Submit
               </Button>
@@ -194,7 +236,7 @@ function App() {
             <Box>
               <SimpleGrid
                 w="100%"
-                h="200"
+                h="auto"
                 bgGradient="linear(to-r, #7928CA, #FF0080)"
                 borderRadius="lg"
                 px="5"
@@ -203,49 +245,29 @@ function App() {
               >
                 <>
                   <Box
-                    h="50px"
                     textAlign="left"
                     borderRadius="lg"
                     fontWeight="400"
                     color="white"
                   >
-                    POS tag
+                    Typo
                   </Box>
-                  <Flex maxW="100%">{listItems}</Flex>
+                  <Wrap w="100%" h="auto">
+                    {listAwal}
+                  </Wrap>
 
-                  {/* <Box
-                    h="50px"
-                    borderRadius="lg"
-                    textAlign="left"
-                    fontWeight="400"
-                    color="white"
-                  >
-                    Kalimat Final
-                  </Box>
-
-                  <Flex>
-                    <Text>{final}</Text>
-                  </Flex> */}
                   <Box
-                    h="50px"
+                    mt="10px"
                     borderRadius="lg"
                     textAlign="left"
                     fontWeight="400"
                     color="white"
                   >
-                    Nilai
+                    Tata Bahasa
                   </Box>
                 </>
               </SimpleGrid>
-              <Text
-                // bgGradient="linear(to-l, #7928CA,#FF0080)"
-                // bgClip="text"
-                // fontSize="6xl"
-                // fontWeight="BOLD"
-                mt="15px"
-              >
-                KALIMAT FINAL
-              </Text>
+              <Text mt="15px">KALIMAT FINAL</Text>
               <Textarea
                 mt="15px"
                 focusBorderColor="#FF0080"
@@ -263,7 +285,7 @@ function App() {
               />
             </Box>
           </SimpleGrid>{' '}
-          <Text mt="30">essAI.id by HARTA TAHTA DATA❤️</Text>
+          <Text mt="30">esAI by HARTA TAHTA DATA❤️</Text>
         </Grid>
       </Box>
     </ChakraProvider>
