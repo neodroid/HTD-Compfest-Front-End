@@ -20,7 +20,11 @@ import {
   useDisclosure,
   Icon,
   Wrap,
-  WrapItem,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  CloseButton,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 
@@ -36,9 +40,13 @@ function App() {
   const [essai, setEssai] = React.useState(null);
   const [tag, setTag] = React.useState([]);
   const [typo, setTypo] = React.useState(['']);
-  const [awal, setAwal] = React.useState(['']);
+  const [awal, setAwal] = React.useState([]);
   const [grammar, setGrammar] = React.useState([]);
   const [final, setFinal] = React.useState(null);
+  const [arrAwal, setArrAwal] = React.useState(['']);
+  const [arrAkhir, setArrAkhir] = React.useState(['']);
+  const [status, setStatus] = React.useState(0);
+  const [beta, setBeta] = React.useState('flex');
 
   // {
   //   typo: '',
@@ -81,15 +89,20 @@ function App() {
     setSubmitting(true);
     fetchKalimatJSON()
       .then(kalimat_backend => {
-        setEssai(kalimat_backend); // fetched movies
+        kalimat_backend.typo ? setEssai(kalimat_backend) : setEssai(null); // fetched movies
+        kalimat_backend.typo
+          ? setEssai(kalimat_backend)
+          : alert('sorry! something went wrong!'); // fetched movies
         console.log(essai);
-
+        setStatus(status + 1);
         setSubmitting(false);
       })
       .catch(error => {
         console.log(error);
-        alert(error);
+        setAwal([]);
         setSubmitting(false);
+        setFinal(error);
+        alert(error);
       });
   };
 
@@ -112,8 +125,45 @@ function App() {
           px="10px"
           color="white"
           borderRadius="md"
+          boxShadow="md"
         >
           {typo[index]}
+        </Center>
+      </Flex>
+    ) : (
+      <></>
+    )
+  );
+
+  const tataBahasa = arrAwal.map((hit, index) =>
+    hit.toLowerCase() != arrAkhir[index].toLowerCase() ? (
+      <Flex minW="150px" justifyContent="space-between">
+        <Text color="red" px="10px" borderColor="red" borderBottom="5px">
+          <Text
+            color="white"
+            px="10px"
+            borderRadius=""
+            bg="red.400"
+            borderBottom="2px"
+            borderColor="red.600"
+          >
+            {hit}
+          </Text>
+        </Text>
+        <Center>
+          <Icon as={ArrowForwardIcon} color="white" />
+        </Center>
+
+        <Center
+          bg="green.500"
+          h="auto"
+          px="10px"
+          color="white"
+          borderRadius=""
+          borderBottom="2px"
+          borderColor="green.600"
+        >
+          {arrAkhir[index]}
         </Center>
       </Flex>
     ) : (
@@ -126,12 +176,33 @@ function App() {
     essai ? setAwal(essai.kalimat_awal) : setAwal([]);
     essai ? setTypo(essai.typo) : setTypo([]);
     essai ? setFinal(essai.kalimat_final) : setFinal([]);
-  }, [essai]);
+    essai ? setArrAwal(essai.arr_awal) : setArrAwal([]);
+    essai ? setArrAkhir(essai.arr_akhir) : setArrAkhir([]);
+    console.log(arrAwal);
+  }, [status]);
 
   return (
     <ChakraProvider theme={theme}>
       {/* <Fonts /> */}
+
       <Box textAlign="center" fontSize="xl">
+        <Alert status="warning" display={beta}>
+          <AlertIcon />
+          {/* <AlertTitle mr={2}>
+            Aplikasi ini masih dalam tahap pengembangan!
+          </AlertTitle> */}
+          <AlertDescription>
+            esAI.app sedang dalam tahap uji beta!
+          </AlertDescription>
+          <CloseButton
+            position="absolute"
+            right="8px"
+            top="8px"
+            onClick={() => {
+              setBeta('none');
+            }}
+          />
+        </Alert>
         <Grid minH="75vh" p={3}>
           <Flex w="100%" p="5" justifyContent="space-between">
             <Flex justifySelf="flex-start">
@@ -250,7 +321,7 @@ function App() {
                     fontWeight="400"
                     color="white"
                   >
-                    Typo
+                    Ejaan
                   </Box>
                   <Wrap w="100%" h="auto">
                     {listAwal}
@@ -265,6 +336,9 @@ function App() {
                   >
                     Tata Bahasa
                   </Box>
+                  <Wrap w="100%" h="auto">
+                    {tataBahasa}
+                  </Wrap>
                 </>
               </SimpleGrid>
               <Text mt="15px">KALIMAT FINAL</Text>
