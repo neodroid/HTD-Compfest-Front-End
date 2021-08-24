@@ -208,7 +208,7 @@ function App() {
                 fontSize="4xl"
                 fontWeight="extrabold"
               >
-                esAI.
+                esAI.app
               </Text>
             </Flex>
             <Flex>
@@ -238,7 +238,7 @@ function App() {
                 kesalahan sesuai dengan tata Bahasa Indonesia menggunakan
                 Kecerdasan Buatan.
                 <br />
-                Dikembangkan oleh tim Harta Tahta DATA❤️
+                Dikembangkan oleh tim Harta Tahta Data❤️
               </ModalBody>
               <ModalHeader>Cara Pakai</ModalHeader>
               <ModalBody>
@@ -359,7 +359,7 @@ function App() {
               />
             </Box>
           </SimpleGrid>{' '}
-          <Text mt="30">esAI by HARTA TAHTA DATA❤️</Text>
+          <Text mt="30">esAI.app by HARTA TAHTA DATA❤️</Text>
         </Grid>
       </Box>
     </ChakraProvider>
