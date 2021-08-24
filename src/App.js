@@ -22,7 +22,7 @@ import {
   Wrap,
   Alert,
   AlertIcon,
-  AlertTitle,
+  Image,
   AlertDescription,
   CloseButton,
 } from '@chakra-ui/react';
@@ -30,6 +30,10 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 import { Formik, Form } from 'formik';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+import typing from './img/Tulis.gif';
+import submitgif from './img/submit.gif';
+import analisis from './img/analisis.jpg';
+import kalimatfinal from './img/kalimatakhir.jpg';
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,14 +51,6 @@ function App() {
   const [arrAkhir, setArrAkhir] = React.useState(['']);
   const [status, setStatus] = React.useState(0);
   const [beta, setBeta] = React.useState('flex');
-
-  // {
-  //   typo: '',
-  //   word_checker: '',
-  //   pos_tagger: '',
-  //   grammar_checker: '',
-  //   kalimat_final: '',
-  // }
 
   const handleInputChange = e => {
     const inputValue = e.target.value;
@@ -238,21 +234,25 @@ function App() {
               <ModalHeader>Informasi</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                essAI.id memastikan semua yang kamu tulis menjadi efektif dan
-                bebas dari kesalahan sesuai dengan PUEBI menggunakan Kecerdasan
-                Buatan.
+                esAI.app memastikan semua yang kamu tulis efektif dan bebas dari
+                kesalahan sesuai dengan tata Bahasa Indonesia menggunakan
+                Kecerdasan Buatan.
                 <br />
                 Dikembangkan oleh tim Harta Tahta DATA❤️
               </ModalBody>
               <ModalHeader>Cara Pakai</ModalHeader>
               <ModalBody>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                1. Tulis kalimat kamu di kolom textbox dibawah
+                <Image src={typing} />
+                <br />
+                2. Klik submit
+                <Image src={submitgif} />
+                <br />
+                3. Analisis kalimat akan muncul setelah loading selesai
+                <Image src={analisis} />
+                <br />
+                4. Kalimat final yang sudah diperbaiki
+                <Image src={kalimatfinal} />
               </ModalBody>
 
               <ModalFooter>
