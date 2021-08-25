@@ -33,7 +33,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import typing from './img/Tulis.gif';
 import submitgif from './img/submit.gif';
 import analisis from './img/analisis.jpg';
-import kalimatfinal from './img/kalimatakhir.jpg';
+import kalimatfinal from './img/kalimat_final.png';
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
