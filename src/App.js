@@ -242,7 +242,7 @@ function App() {
               </ModalBody>
               <ModalHeader>Cara Pakai</ModalHeader>
               <ModalBody>
-                1. Tulis kalimat kamu di kolom textbox dibawah
+                1. Tulis kalimat kamu di kolom textbox di bawah
                 <Image src={typing} />
                 <br />
                 2. Klik submit
