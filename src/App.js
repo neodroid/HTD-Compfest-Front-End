@@ -25,6 +25,8 @@ import {
   Image,
   AlertDescription,
   CloseButton,
+  Skeleton,
+  Tooltip,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 
@@ -42,13 +44,15 @@ function App() {
   const [charCount, setCharCount] = React.useState(0);
   const [isSubmitting, setSubmitting] = React.useState(false);
   const [essai, setEssai] = React.useState(null);
-  const [tag, setTag] = React.useState([]);
+  const [tag, setTag] = React.useState(['']);
+  const [desc, setDesc] = React.useState(['']);
   const [typo, setTypo] = React.useState(['']);
   const [awal, setAwal] = React.useState([]);
-  const [grammar, setGrammar] = React.useState([]);
+  const [grammar, setGrammar] = React.useState(['']);
   const [final, setFinal] = React.useState(null);
   const [arrAwal, setArrAwal] = React.useState(['']);
   const [arrAkhir, setArrAkhir] = React.useState(['']);
+
   const [status, setStatus] = React.useState(0);
   const [beta, setBeta] = React.useState('flex');
 
@@ -131,6 +135,21 @@ function App() {
     )
   );
 
+  const POStag = {
+    X: 'tidak diketahui atau belum diketahui',
+    yet: 'error',
+  };
+
+  const grammarFinal = grammar.map((hit, index) =>
+    status ? (
+      <Tooltip label={tag[index] + ' : ' + desc[index]} placement="top">
+        {hit + ' '}
+      </Tooltip>
+    ) : (
+      <></>
+    )
+  );
+
   const tataBahasa = arrAwal.map((hit, index) =>
     hit.toLowerCase() != arrAkhir[index].toLowerCase() ? (
       <Flex minW="150px" justifyContent="space-between">
@@ -168,11 +187,13 @@ function App() {
   );
 
   useEffect(() => {
-    essai ? setTag(essai.pos_tagger) : setTag([]);
+    essai ? setTag(essai.pos_tagger) : setTag(['']);
+    essai ? setDesc(essai.final_deskripsi) : setDesc(['']);
     essai ? setAwal(essai.kalimat_awal) : setAwal([]);
     essai ? setTypo(essai.typo) : setTypo([]);
     essai ? setFinal(essai.kalimat_final) : setFinal([]);
     essai ? setArrAwal(essai.arr_awal) : setArrAwal([]);
+    essai ? setGrammar(essai.grammar_checker) : setGrammar([]);
     essai ? setArrAkhir(essai.arr_akhir) : setArrAkhir([]);
     console.log(arrAwal);
   }, [status]);
@@ -300,6 +321,7 @@ function App() {
                 isLoading={isSubmitting}
                 // bgGradient="linear(to-l, #FF0080,#7928CA)"
                 // _hover={{ bg: '#ebedf0' }}
+                shadow="dark-lg"
               >
                 Submit
               </Button>
@@ -323,9 +345,16 @@ function App() {
                   >
                     Ejaan
                   </Box>
-                  <Wrap w="100%" h="auto">
+                  {isSubmitting ? (
+                    <Skeleton mt="5px" height="25px" w="50%" />
+                  ) : (
+                    <Wrap w="100%" h="auto">
+                      {listAwal}
+                    </Wrap>
+                  )}
+                  {/* <Wrap w="100%" h="auto">
                     {listAwal}
-                  </Wrap>
+                  </Wrap> */}
 
                   <Box
                     mt="10px"
@@ -336,13 +365,20 @@ function App() {
                   >
                     Tata Bahasa
                   </Box>
-                  <Wrap w="100%" h="auto">
+                  {isSubmitting ? (
+                    <Skeleton mt="5px" height="25px" w="75%" />
+                  ) : (
+                    <Wrap w="100%" h="auto">
+                      {tataBahasa}
+                    </Wrap>
+                  )}
+                  {/* <Wrap w="100%" h="auto">
                     {tataBahasa}
-                  </Wrap>
+                  </Wrap> */}
                 </>
               </SimpleGrid>
               <Text mt="15px">KALIMAT FINAL</Text>
-              <Textarea
+              {/* <Textarea
                 mt="15px"
                 focusBorderColor="#FF0080"
                 border="2px"
@@ -356,9 +392,22 @@ function App() {
                 boxShadow="dark-lg"
                 value={final}
                 resize="none"
-              />
+              /> */}
+              <Flex
+                // px="5px"
+                minH="150px"
+                w="100%"
+                // bg="red"
+                shadow="dark-lg"
+                border="2px"
+                borderColor="#7928CA"
+                borderRadius="md"
+                textAlign="start"
+              >
+                <Text m="15px">{grammarFinal}</Text>
+              </Flex>
             </Box>
-          </SimpleGrid>{' '}
+          </SimpleGrid>
           <Text mt="30">esAI.app by HARTA TAHTA DATA❤️</Text>
         </Grid>
       </Box>
