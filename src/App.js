@@ -142,7 +142,12 @@ function App() {
 
   const grammarFinal = grammar.map((hit, index) =>
     status ? (
-      <Tooltip label={tag[index] + ' : ' + desc[index]} placement="top">
+      <Tooltip
+        label={tag[index] + ' : ' + desc[index]}
+        placement="top"
+        hasArrow
+        arrowSize={15}
+      >
         {hit + ' '}
       </Tooltip>
     ) : (
