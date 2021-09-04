@@ -382,7 +382,10 @@ function App() {
                   </Wrap> */}
                 </>
               </SimpleGrid>
-              <Text mt="15px">KALIMAT FINAL</Text>
+              <Text mt="15px">
+                KALIMAT FINAL
+                <br />(<i>hover</i> pada teks untuk melihat informasi)
+              </Text>
               {/* <Textarea
                 mt="15px"
                 focusBorderColor="#FF0080"
@@ -398,6 +401,7 @@ function App() {
                 value={final}
                 resize="none"
               /> */}
+
               <Flex
                 // px="5px"
                 minH="150px"
